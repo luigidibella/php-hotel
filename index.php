@@ -51,10 +51,20 @@
   <title>php-hotel</title>
 </head>
 <body>
-  <div class="container my-3">
+  <div class="container text-center my-3">
     <h1>php-hotel</h1>
 
-    <table class="table">
+    <?php
+      $parking_filter = isset($_GET['parking_filter']) && $_GET['parking_filter'] === 'on';
+    ?>
+
+    <form action="" method="GET">
+      <label for="parking_filter">Mostra solo hotel con parcheggio</label>
+      <input type="checkbox" id="parking_filter" name="parking_filter" <?php echo $parking_filter ? 'checked' : ''; ?>>
+      <button type="submit">Filtra</button>
+    </form>
+
+    <table class="table text-start">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -66,18 +76,21 @@
         </tr>
       </thead>
       <tbody>
-
-        <?php foreach($hotels as $index => $item): ?>
-          <tr>
-            <th scope="row"><?php echo $index + 1; ?></th>
-            <td><?php echo $item['name']; ?></td>
-            <td><?php echo $item['description']; ?></td>
-            <td><?php echo $item['parking'] ? 'Si' : 'No'; ?></td>
-            <td><?php echo $item['vote']; ?></td>
-            <td><?php echo $item['distance_to_center']; ?></td>
-          </tr>
-        <?php endforeach; ?>
-      
+        <?php
+        foreach ($hotels as $index => $item) {
+          if ($parking_filter && !$item['parking']) {
+          } else {
+            ?>
+            <tr>
+              <th scope="row"><?php echo $index + 1; ?></th>
+              <td><?php echo $item['name']; ?></td>
+              <td><?php echo $item['description']; ?></td>
+              <td><?php echo $item['parking'] ? 'Si' : 'No'; ?></td>
+              <td><?php echo $item['vote']; ?></td>
+              <td><?php echo $item['distance_to_center']; ?></td>
+            </tr>
+          <?php }
+        } ?>
       </tbody>
     </table>
 
